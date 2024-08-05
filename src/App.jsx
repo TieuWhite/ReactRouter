@@ -1,37 +1,33 @@
-import ResponsiveAppBar from "./components/ResponsiveAppBar";
-import "./App.css";
-import { Container, Grid, Pagination } from "@mui/material";
-import { useState } from "react";
-import JobsPage from "./pages/JobPage";
-import jobs from "./jobs.json";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
+import HomePage from "./pages/HomePage";
+import RAppBar from "./components/RAppBar";
+import NotFound from "./pages/NotFound";
+import DetailModel from "./pages/DetailModal";
+import LoginModal from "./pages/LoginModal";
 
-function App() {
-  const [currentPage, setCurrentPage] = useState(1);
-
+export default function App() {
+  // let location = useLocation();
+  let state = location.state;
   return (
     <>
-      <ResponsiveAppBar />
-      <Container maxWidth={"1140px"} margin={"auto"}>
-        <Grid container spacing={0}>
-          <JobsPage jobs={jobs} currentPage={currentPage} />
-          <Grid item xs={12} display="flex" justifyContent="center">
-            <Pagination
-              sx={{
-                "& .MuiPaginationItem-root": {
-                  color: "white",
-                },
-              }}
-              count={3}
-              page={currentPage}
-              onChange={(e, page) => setCurrentPage(page)}
-              variant="outlined"
-              shape="rounded"
-            />
-          </Grid>
-        </Grid>
-      </Container>
+      <BrowserRouter>
+        <Routes location={state?.backgroundLocation || location}>
+          <Route path="/" element={<RAppBar />}>
+            <Route exact path="/" element={<HomePage />} />
+            <Route path="/detail/:id" element={<DetailModel />} />
+            {/* <Route path="/login" element={<LoginModal />} /> */}
+            <Route element={<ProtectedRoutes />}></Route>
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+        {state?.backgroundLocation && (
+          <Routes>
+            <Route path="/login" element={<LoginModal />} />
+          </Routes>
+        )}
+      </BrowserRouter>
     </>
   );
 }
-
-export default App;
