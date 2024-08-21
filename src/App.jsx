@@ -42,9 +42,9 @@ export default function App() {
       {state?.backgroundLocation && (
         <Routes>
           <Route path="/login" element={<LoginModal setUser={setUser} />} />
-          <Route element={<ProtectedRoutes user={user} />}>
-            <Route path="/jobs/:id" element={<JobModal />} />
-          </Route>
+          {/* <Route element={<ProtectedRoutes user={user} />}> */}
+          <Route path="/jobs/:id" element={<JobModal />} />
+          {/* </Route>  */}
         </Routes>
       )}
     </>
