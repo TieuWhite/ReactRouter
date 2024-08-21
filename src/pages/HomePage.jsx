@@ -1,17 +1,10 @@
-import { Box, Container, Pagination } from "@mui/material";
-import { useState } from "react";
-import RAppBar from "../components/RAppBar";
-import jobs from "../jobs.json";
-import JobPage from "../components/JobPage";
-import { Routes } from "react-router-dom";
+import { Box, Container, Grid, Pagination } from "@mui/material";
+import JobCard from "../components/JobCard";
 
-export default function HomePage() {
-  const [currentPage, setCurrentPage] = useState(1);
-
+export default function HomePage({ currentPage, setCurrentPage, jobs }) {
   return (
     <>
       <Box minWidth={"sm"} width={"100%"} height={"100%"}>
-        <Routes></Routes>
         <Container
           sx={{
             display: "flex",
@@ -21,12 +14,18 @@ export default function HomePage() {
             height: "100%",
           }}
         >
-          <JobPage jobs={jobs} currentPage={currentPage}></JobPage>
+          <Grid container spacing={3}>
+            {jobs.slice((currentPage - 1) * 5, currentPage * 5).map((job) => (
+              <Grid item xs={12} sm={6} md={4} key={job.id}>
+                <JobCard job={job} />
+              </Grid>
+            ))}
+          </Grid>
         </Container>
         <Pagination
           count={3}
           page={currentPage}
-          onChange={(event, page) => setCurrentPage(page)}
+          onChange={(page) => setCurrentPage(page)}
           color="primary"
           sx={{ display: "flex", justifyContent: "center" }}
         />

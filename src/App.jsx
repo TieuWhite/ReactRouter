@@ -1,33 +1,52 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import ProtectedRoutes from "./pages/utils/ProtectedRoutes";
 import HomePage from "./pages/HomePage";
 import RAppBar from "./components/RAppBar";
 import NotFound from "./pages/NotFound";
-import DetailModel from "./pages/DetailModal";
 import LoginModal from "./pages/LoginModal";
+import { useState } from "react";
+import JobModal from "./pages/JobModal";
+import jobs from "./jobs.json";
 
 export default function App() {
-  // let location = useLocation();
+  const [user, setUser] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  let location = useLocation();
   let state = location.state;
+
   return (
     <>
-      <BrowserRouter>
-        <Routes location={state?.backgroundLocation || location}>
-          <Route path="/" element={<RAppBar />}>
-            <Route exact path="/" element={<HomePage />} />
-            <Route path="/detail/:id" element={<DetailModel />} />
-            {/* <Route path="/login" element={<LoginModal />} /> */}
-            <Route element={<ProtectedRoutes />}></Route>
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <RAppBar user={user} setUser={setUser} />
+      <Routes location={state?.backgroundLocation || location}>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              jobs={jobs}
+            />
+          }
+        />
 
-        {state?.backgroundLocation && (
-          <Routes>
-            <Route path="/login" element={<LoginModal />} />
-          </Routes>
-        )}
-      </BrowserRouter>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {state?.backgroundLocation && (
+        <Routes>
+          <Route path="/login" element={<LoginModal setUser={setUser} />} />
+          <Route element={<ProtectedRoutes user={user} />}>
+            <Route path="/jobs/:id" element={<JobModal />} />
+          </Route>
+        </Routes>
+      )}
     </>
   );
 }

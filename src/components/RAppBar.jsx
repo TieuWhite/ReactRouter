@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import "@fontsource/roboto/500.css";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-export default function RAppBar() {
+export default function RAppBar({ user, setUser }) {
   let location = useLocation();
   return (
     <>
@@ -28,9 +28,19 @@ export default function RAppBar() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Job Routing
             </Typography>
-            <Link to={"/login"} state={{ backgroundLocation: location }}>
-              <Button color="inherit">Login</Button>
-            </Link>
+
+            {user ? (
+              <>
+                <Typography>{user.username}</Typography>
+                <Link to="/" onClick={() => setUser(null)}>
+                  <Button sx={{ color: "white" }}>Log Out</Button>
+                </Link>
+              </>
+            ) : (
+              <Link to="/login" state={{ backgroundLocation: location }}>
+                <Button sx={{ color: "white" }}>Log In</Button>
+              </Link>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

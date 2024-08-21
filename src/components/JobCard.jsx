@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { Button, Chip, Divider, Modal, Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Button, Chip, Divider } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 
 const styleDivider = {
   py: 0,
@@ -20,38 +20,38 @@ const styleChip = {
   backgroundColor: "rgb(215, 71, 66)",
 };
 
+const style = {
+  height: 200,
+  my: 4,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: 1,
+  p: 2,
+  backgroundColor: "#383838",
+  color: "white",
+  borderRadius: "15px",
+};
+
 export default function JobCard({ job }) {
-  const { id } = useParams();
+  location = useLocation();
   return (
     <>
-      <Box sx={{ flexWrap: "wrap" }}>
-        <Box
-          height={200}
-          my={4}
-          display="flex"
-          flexDirection={"column"}
-          justifyContent={"space-between"}
-          alignItems="center"
-          gap={1}
-          p={2}
-          backgroundColor="#383838"
-          color={"white"}
-          borderRadius={"15px"}
-        >
-          {job.title}
-          <Divider variant="middle" sx={styleDivider}></Divider>
-          <Box>
-            {job.skills.slice(0, 4).map((skill) => (
-              <Chip sx={styleChip} key={skill} label={skill} />
-            ))}
-          </Box>
-          {job.description}
-          <Link to={`/detail/${job.id}`}>
-            <Button variant="contained" sx={{ bgcolor: "#FFA726" }}>
-              Learn More
-            </Button>
-          </Link>
+      <Box sx={style}>
+        {job.title}
+        <Divider variant="middle" sx={styleDivider}></Divider>
+        <Box>
+          {job.skills.slice(0, 4).map((skill) => (
+            <Chip sx={styleChip} key={skill} label={skill} />
+          ))}
         </Box>
+        {job.description}
+        <Link to={`/jobs/${job.id}`} state={{ backgroundLocation: location }}>
+          <Button variant="contained" sx={{ bgcolor: "#FFA726" }}>
+            Learn More
+          </Button>
+        </Link>
       </Box>
     </>
   );
