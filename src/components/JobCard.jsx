@@ -35,7 +35,7 @@ const style = {
 };
 
 export default function JobCard({ job }) {
-  location = useLocation();
+  const location = useLocation();
   return (
     <>
       <Box sx={style}>

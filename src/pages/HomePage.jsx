@@ -25,7 +25,7 @@ export default function HomePage({ currentPage, setCurrentPage, jobs }) {
         <Pagination
           count={3}
           page={currentPage}
-          onChange={(page) => setCurrentPage(page)}
+          onChange={(event, page) => setCurrentPage(page)}
           color="primary"
           sx={{ display: "flex", justifyContent: "center" }}
         />
