@@ -34,7 +34,7 @@ const style = {
   borderRadius: "15px",
 };
 
-export default function JobCard({ job }) {
+export default function JobCard({ job, user }) {
   const location = useLocation();
   return (
     <>
@@ -47,7 +47,10 @@ export default function JobCard({ job }) {
           ))}
         </Box>
         {job.description}
-        <Link to={`/jobs/${job.id}`} state={{ backgroundLocation: location }}>
+        <Link
+          to={user ? `/jobs/${job.id}` : `/login`}
+          state={{ backgroundLocation: location }}
+        >
           <Button variant="contained" sx={{ bgcolor: "#FFA726" }}>
             Learn More
           </Button>

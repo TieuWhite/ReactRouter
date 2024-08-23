@@ -5,7 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import ProtectedRoutes from "./pages/utils/ProtectedRoutes";
+
 import HomePage from "./pages/HomePage";
 import RAppBar from "./components/RAppBar";
 import NotFound from "./pages/NotFound";
@@ -32,6 +32,7 @@ export default function App() {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               jobs={jobs}
+              user={user}
             />
           }
         />
@@ -41,9 +42,7 @@ export default function App() {
 
       {state?.backgroundLocation && (
         <Routes>
-          <Route element={<ProtectedRoutes user={user} />}>
-            <Route path="/jobs/:id" element={<JobModal />} />
-          </Route>
+          <Route path="/jobs/:id" element={<JobModal />} />
           <Route path="/login" element={<LoginModal setUser={setUser} />} />
         </Routes>
       )}
